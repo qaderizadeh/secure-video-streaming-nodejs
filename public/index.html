@@ -1,0 +1,34 @@
+<!-- public/index.html (token-in-URL approach) -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Throttled Video Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <h1>Throttled Video Player</h1>
+  <label>
+    <span>Signed token:</span>
+    <input id="token" type="text" placeholder="st=eyJ..." style="width: 400px;" />
+  </label>
+  <button id="load">Load Video</button>
+  <video id="player" controls preload="metadata" crossorigin="anonymous"></video>
+
+  <script>
+    const player = document.getElementById('player');
+    const tokenInput = document.getElementById('token');
+    const loadBtn = document.getElementById('load');
+
+    loadBtn.addEventListener('click', () => {
+      const st = encodeURIComponent(tokenInput.value.trim());
+      if (!st) {
+        alert('Enter a signed token.');
+        return;
+      }
+      player.src = `/video/sample.mp4?st=${st}`;
+      player.play().catch(console.error);
+    });
+  </script>
+</body>
+</html>
